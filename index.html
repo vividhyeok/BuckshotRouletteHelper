@@ -61,6 +61,10 @@
   th,td{width:var(--cell); height:var(--cell); text-align:center; vertical-align:middle; border:1px solid var(--tileBorder); border-radius:8px; background:var(--tile)}
   th{color:var(--muted)}
   .num{font-size:12px}
+  /* remaining counters above the table */
+  .remain{display:flex; justify-content:flex-end; gap:10px; align-items:center; font-family:ui-monospace,Menlo,Consolas,monospace; margin:0 0 6px}
+  .remain .r{color:var(--red)}
+  .remain .f{color:var(--blue)}
   .mark{font-size:18px; line-height:1}
   .mark.red{color:var(--red)}
   .mark.blue{color:var(--blue)}
@@ -282,6 +286,7 @@ function render(){
   if(!state){
     elGrid.innerHTML = "";
     elSummary.innerHTML = "";
+    elSummary.style.display = "";
     showModal(true);
     updateNavButtons();
     return;
@@ -289,16 +294,27 @@ function render(){
 
   // table
   const n = state.slots.length;
+  const cReal = state.slots.filter(x=>x==='real').length;
+  const cFake = state.slots.filter(x=>x==='fake').length;
+  const remReal = Math.max(0, state.real - cReal);
+  const remFake = Math.max(0, state.fake - cFake);
   const head = Array.from({length:n}, (_,i)=>`<th class="num">${i+1}</th>`).join("");
   const marks= state.slots.map(x=>{
     if(x==="real")  return `<td><span class="mark red">O</span></td>`;
     if(x==="fake")  return `<td><span class="mark blue">X</span></td>`;
     return `<td></td>`; // 미정은 빈칸
   }).join("");
-  const btnR = state.slots.map((_,i)=>`<td><button class="btnsq red"  aria-label="real" onclick="setSlot(${i},'real')"></button></td>`).join("");
-  const btnF = state.slots.map((_,i)=>`<td><button class="btnsq blue" aria-label="fake" onclick="setSlot(${i},'fake')"></button></td>`).join("");
+  const btnR = state.slots.map((v,i)=>{
+    const show = (v==='real') || (remReal>0);
+    return `<td>${ show ? `<button class="btnsq red" aria-label="real" onclick="setSlot(${i},'real')"></button>` : `` }</td>`;
+  }).join("");
+  const btnF = state.slots.map((v,i)=>{
+    const show = (v==='fake') || (remFake>0);
+    return `<td>${ show ? `<button class="btnsq blue" aria-label="fake" onclick="setSlot(${i},'fake')"></button>` : `` }</td>`;
+  }).join("");
 
   elGrid.innerHTML = `
+    <div class="remain"><span class="r">${remReal}</span><span class="f">${remFake}</span></div>
     <table>
       <tr>${head}</tr>
       <tr>${marks}</tr>
@@ -307,13 +323,9 @@ function render(){
     </table>
   `;
 
-  // numeric summaries only
-  const cReal = state.slots.filter(x=>x==='real').length;
-  const cFake = state.slots.filter(x=>x==='fake').length;
-  elSummary.innerHTML = `
-    <div class="sumRow real"><span class="left">${cReal}</span>/<span class="right">${state.real}</span></div>
-    <div class="sumRow fake"><span class="left">${cFake}</span>/<span class="right">${state.fake}</span></div>
-  `;
+  // hide old numeric summary block for this new UX
+  elSummary.innerHTML = "";
+  elSummary.style.display = "none";
 
   // a11y live
   $("#status").textContent = `real ${cReal}/${state.real}, fake ${cFake}/${state.fake}`;
