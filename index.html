@@ -153,8 +153,8 @@
 <script>
 /* i18n */
 const fallbackDict = {
-  en:{ title:"Buckshot Roulette Helper", inputHint:"Ex: 6,2 (max 8 total)", confirm:"Start", resetConfirm:"Start a new game?", invalid:"Invalid input. Sum must be 1~8 using non-negative integers." },
-  ko:{ title:"벅샷 룰렛 도우미",   inputHint:"예: 6,2 (총합 최대 8)",             confirm:"시작",   resetConfirm:"새 게임을 시작할까요?",        invalid:"입력이 올바르지 않습니다. 총합은 1~8, 음수가 아닌 정수를 사용하세요." }
+  en:{ title:"Buckshot Roulette Helper", inputHint:"Format: Live round sum, Blank round sum (e.g., 6,2; max 8 total)", confirm:"Start", resetConfirm:"Start a new game?", invalid:"Invalid input. Sum must be 1~8 using non-negative integers." },
+  ko:{ title:"벅샷 룰렛 도우미",   inputHint:"형식: 실탄 수, 공포탄 수 (예: 6,2; 총합 최대 8)",             confirm:"시작",   resetConfirm:"새 게임을 시작할까요?",        invalid:"입력이 올바르지 않습니다. 총합은 1~8, 음수가 아닌 정수를 사용하세요." }
 };
 const translations = JSON.parse(JSON.stringify(fallbackDict));
 const loadedLangs = new Set();

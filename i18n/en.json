@@ -1,6 +1,6 @@
 {
   "title": "Buckshot Roulette Helper",
-  "inputHint": "Ex: 6,2 (max 8 total)",
+  "inputHint": "Format: Live round sum, Blank round sum (e.g., 6,2; max 8 total)",
   "confirm": "Start",
   "resetConfirm": "Start a new game?",
   "invalid": "Invalid input. Sum ≤ 8 and use non-negative integers."
