@@ -52,7 +52,13 @@
   .row input{flex:1; background:var(--tile); color:var(--fg); border:1px solid var(--border); border-radius:8px; padding:10px; font-size:14px}
   .btn{width:100%; margin-top:10px; padding:10px; border:none; border-radius:10px; background:#2b3038; color:#fff; font-size:14px; cursor:pointer}
   .btn:active{transform:translateY(1px)}
-  .hint{font-size:12px; color:var(--muted); margin-top:6px}
+  .hint{font-size:12px; color:var(--muted); margin-top:6px; display:flex; flex-wrap:wrap; align-items:center; gap:6px; line-height:1.4}
+  .hint .intro{color:var(--fg); font-weight:600}
+  .hint .label{font-weight:600}
+  .hint .label.real{color:var(--red)}
+  .hint .label.fake{color:var(--blue)}
+  .hint .sep{color:var(--muted)}
+  .hint .example{opacity:.85}
 
   /* grid */
   .tracker{display:flex; flex-direction:column; gap:12px; margin-top:10px}
@@ -153,8 +159,30 @@
 <script>
 /* i18n */
 const fallbackDict = {
-  en:{ title:"Buckshot Roulette Helper", inputHint:"Format: Live round sum, Blank round sum (e.g., 6,2; max 8 total)", confirm:"Start", resetConfirm:"Start a new game?", invalid:"Invalid input. Sum must be 1~8 using non-negative integers." },
-  ko:{ title:"벅샷 룰렛 도우미",   inputHint:"형식: 실탄 수, 공포탄 수 (예: 6,2; 총합 최대 8)",             confirm:"시작",   resetConfirm:"새 게임을 시작할까요?",        invalid:"입력이 올바르지 않습니다. 총합은 1~8, 음수가 아닌 정수를 사용하세요." }
+  en:{
+    title:"Buckshot Roulette Helper",
+    inputHint:"Format: Live round sum, Blank round sum (e.g., 6,2; max 8 total)",
+    placeholder:"6,2",
+    formatIntro:"Format:",
+    realLabel:"Live rounds",
+    fakeLabel:"Blank rounds",
+    formatExample:"Example: 6,2 (max 8 total)",
+    confirm:"Start",
+    resetConfirm:"Start a new game?",
+    invalid:"Invalid input. Sum must be 1~8 using non-negative integers."
+  },
+  ko:{
+    title:"벅샷 룰렛 도우미",
+    inputHint:"형식: 실탄 수, 공포탄 수 (예: 6,2; 총합 최대 8)",
+    placeholder:"6,2",
+    formatIntro:"형식:",
+    realLabel:"실탄 수",
+    fakeLabel:"공포탄 수",
+    formatExample:"예시: 6,2 (총합 최대 8)",
+    confirm:"시작",
+    resetConfirm:"새 게임을 시작할까요?",
+    invalid:"입력이 올바르지 않습니다. 총합은 1~8, 음수가 아닌 정수를 사용하세요."
+  }
 };
 const translations = JSON.parse(JSON.stringify(fallbackDict));
 const loadedLangs = new Set();
@@ -187,10 +215,19 @@ function t(k){ return (translations[lang]||translations.en)[k]; }
 function applyLang(){
   elLang.value = lang;
   elMTitle.textContent = t("title");
-  elHint.textContent   = t("inputHint");
   elStart.textContent  = t("confirm");
   elTitle.textContent  = t("title");
-  elPair.placeholder   = t("inputHint");
+  elPair.placeholder   = t("placeholder");
+  elHint.innerHTML     = buildHintHTML();
+}
+function buildHintHTML(){
+  return [
+    `<span class="intro">${t("formatIntro")}</span>`,
+    `<span class="label real">${t("realLabel")}</span>`,
+    `<span class="sep">/</span>`,
+    `<span class="label fake">${t("fakeLabel")}</span>`,
+    `<span class="example">${t("formatExample")}</span>`
+  ].join(" ");
 }
 function ensureLangLoaded(l){
   if(loadedLangs.has(l)) return;

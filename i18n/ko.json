@@ -1,6 +1,11 @@
 {
   "title": "벅샷 룰렛 도우미",
   "inputHint": "형식: 실탄 수, 공포탄 수 (예: 6,2; 총합 최대 8)",
+  "placeholder": "6,2",
+  "formatIntro": "형식:",
+  "realLabel": "실탄 수",
+  "fakeLabel": "공포탄 수",
+  "formatExample": "예시: 6,2 (총합 최대 8)",
   "confirm": "시작",
   "resetConfirm": "새 게임을 시작할까요?",
   "invalid": "입력이 올바르지 않습니다. 총합은 8 이하, 음수가 아닌 정수를 사용하세요."
