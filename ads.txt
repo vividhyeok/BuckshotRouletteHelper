@@ -1,0 +1,4 @@
+# Authorized Digital Sellers for Buckshot Roulette Helper
+# For details see: https://iabtechlab.com/ads-txt/
+# Google AdSense
+google.com, pub-5832948864230013, DIRECT, f08c47fec0942fa0
