@@ -61,8 +61,9 @@
   th,td{width:var(--cell); height:var(--cell); text-align:center; vertical-align:middle; border:1px solid var(--tileBorder); border-radius:8px; background:var(--tile)}
   th{color:var(--muted)}
   .num{font-size:12px}
-  /* remaining counters above the table */
-  .remain{display:flex; justify-content:flex-end; gap:10px; align-items:center; font-family:ui-monospace,Menlo,Consolas,monospace; margin:0 0 6px}
+  /* remaining counters above the table (centered) */
+  .remain{display:flex; justify-content:center; gap:14px; align-items:center; font-family:ui-monospace,Menlo,Consolas,monospace; margin:0 0 8px; width:100%;}
+  .remain span{font-size:28px}
   .remain .r{color:var(--red)}
   .remain .f{color:var(--blue)}
   .mark{font-size:18px; line-height:1}
@@ -152,8 +153,8 @@
 <script>
 /* i18n */
 const fallbackDict = {
-  en:{ title:"Buckshot Roulette Helper", inputHint:"Enter as: real,fake (max 8 total)", confirm:"Start", resetConfirm:"Start a new game?", invalid:"Invalid input. Sum must be 1~8 using non-negative integers." },
-  ko:{ title:"벅샷 룰렛 도우미",   inputHint:"예: 실탄,공포탄 (총합 최대 8)",      confirm:"시작",   resetConfirm:"새 게임을 시작할까요?",        invalid:"입력이 올바르지 않습니다. 총합은 1~8, 음수가 아닌 정수를 사용하세요." }
+  en:{ title:"Buckshot Roulette Helper", inputHint:"Ex: 6 2 (max 8 total)", confirm:"Start", resetConfirm:"Start a new game?", invalid:"Invalid input. Sum must be 1~8 using non-negative integers." },
+  ko:{ title:"벅샷 룰렛 도우미",   inputHint:"예: 6 2 (총합 최대 8)",             confirm:"시작",   resetConfirm:"새 게임을 시작할까요?",        invalid:"입력이 올바르지 않습니다. 총합은 1~8, 음수가 아닌 정수를 사용하세요." }
 };
 const translations = JSON.parse(JSON.stringify(fallbackDict));
 const loadedLangs = new Set();
@@ -268,8 +269,8 @@ function load(){ try{ return JSON.parse(localStorage.getItem(LS_STATE)); }catch{
 /* modal */
 function showModal(v){ elModal.style.display = v ? "flex" : "none"; }
 function initFromInput(){
-  const parts = (elPair.value||"").split(",").map(v=>parseInt(v.trim(),10));
-  const real = parts[0], fake = parts[1];
+  const tokens = (elPair.value||"").trim().split(/[\s,]+/);
+  const real = parseInt(tokens[0],10), fake = parseInt(tokens[1],10);
   const total = (Number.isInteger(real)?real:NaN) + (Number.isInteger(fake)?fake:NaN);
   const ok = Number.isInteger(real) && Number.isInteger(fake) && real>=0 && fake>=0 && total>=1 && total<=8;
   if(!ok) return alert(t("invalid"));
